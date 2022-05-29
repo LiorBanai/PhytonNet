@@ -8,7 +8,7 @@ namespace PythonHospitalDemo.Controllers
 {
     public interface IPythonEngineController
     {
-        void Initialize();
+        void Initialize(string pathToVirtualEnv,string pythonEXEFolder);
 
         void RunCommand(string command);
     }

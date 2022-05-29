@@ -25,7 +25,36 @@ namespace PythonNetEngine
         {
             m_scope.Value.Dispose();
         }
+        public string PythonPaths()
+        {
+            try
+            {
+                using (Py.GIL())
+                {
+                    dynamic sys = Py.Import("sys");
+                    dynamic os = Py.Import("os");
+                    StringBuilder sb = new StringBuilder($"PYTHONHOME: {os.getenv("PYTHONHOME")}");
+                    sb.AppendLine($"PYTHONPATH: {os.getenv("PYTHONPATH")}");
+                    sb.AppendLine($"sys.executable: {sys.executable}");
+                    sb.AppendLine($"sys.prefix: {sys.prefix}");
+                    sb.AppendLine($"sys.base_prefix: {sys.base_prefix}");
+                    sb.AppendLine($"sys.exec_prefix: {sys.exec_prefix}");
+                    sb.AppendLine($"sys.base_exec_prefix: {sys.base_exec_prefix}");
+                    sb.AppendLine("sys.path:");
+                    foreach (var p in sys.path)
+                    {
+                        sb.AppendLine(p.ToString());
+                    }
 
+                    return sb.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Trace: \n{ex.StackTrace} " + "\n" +
+                       $"Message: \n {ex.Message}" + "\n";
+            }
+        }
         public string ExecuteCommand(string command)
         {
             string result;
@@ -73,13 +102,20 @@ namespace PythonNetEngine
         public void SetSearchPath(IList<string> paths)
         {
             var searchPaths = paths.Where(Directory.Exists).Distinct().ToList();
-
-            using (Py.GIL())
+            try
             {
-                var src = "import sys\n" + 
-                           $"sys.path.extend({searchPaths.ToPython()})";
-                ExecuteCommand(src);
+                using (Py.GIL())
+                {
+                    var src = "import sys\n" +
+                              $"sys.path.extend({searchPaths.ToPython()})";
+                    ExecuteCommand(src);
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+     
         }
 
         public void SetVariable(string name, object value)

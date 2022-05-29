@@ -14,6 +14,7 @@ namespace PythonNetEngine.Interfaces
 
         // sets an object in Python's scope
         void SetVariable(string name, object value);
+        string PythonPaths();
 
         // Python's search path
         IList<string> SearchPaths();

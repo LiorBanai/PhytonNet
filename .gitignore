@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/PythonHospitalDemo/.vs/ProjectEvaluation
+/PythonHospitalDemo/.vs/PythonHospitalDemo/DesignTimeBuild/.dtbcache.v2
+/PythonHospitalDemo/.vs/PythonHospitalDemo/FileContentIndex
+/PythonHospitalDemo/.vs/PythonHospitalDemo/v17/.futdcache.v1
